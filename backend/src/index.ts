@@ -1,13 +1,23 @@
-import express, {Request, Response} from 'express'
+import dotenv from 'dotenv';
+import db from './models/db';
+import app from './app';
 
-const app = express()
+const PORT = process.env.PORT || 3000;
 
-app.get('/',(req:Request, res:Response)=>{
-    res.send('Servidor Corriend')
-});
+dotenv.config();
 
-app.listen(3000, () =>{
-    console.log("Corriendo puerto en 3000")
-})
+(async () => {
+    try {
+        await db.init();
+        app.listen(PORT ,()=>{
+            console.log("Corriendo en el puerto " + PORT);
+             console.log("Base de datos conectada");
+        })
+       
+    } catch (error) {
+        console.error("Error al conectar a la base de datos", error);
+    }
+})();
+
 
 
